@@ -9,7 +9,10 @@ import 'package:topjobinn/presentation/router/app_router.dart';
 import 'widgets/login_placeholder.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final emailController=TextEditingController();
+  final passwordController=TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,7 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: TextField(
+                                      controller: emailController,
                                       decoration: InputDecoration(
                                         contentPadding:
                                             EdgeInsets.symmetric(horizontal: 15.w),
@@ -100,6 +104,7 @@ class LoginScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: TextField(
+                                      controller: passwordController,
                                       decoration: InputDecoration(
                                         contentPadding:
                                             EdgeInsets.symmetric(horizontal: 15.w),
@@ -143,7 +148,9 @@ class LoginScreen extends StatelessWidget {
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18))),
-                            onPressed: () {},
+                            onPressed: () {
+                              context.read<LoginCubit>().signInWithEmail(email: emailController.text, password: passwordController.text);
+                            },
                             child: Text(
                               'LOGIN',
                               style: TextStyle(

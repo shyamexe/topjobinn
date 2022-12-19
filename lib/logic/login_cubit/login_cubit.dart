@@ -107,6 +107,28 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginFailure(error: e.toString()));
     }
   }
+
+    signInWithEmail({required String email, required String password}) async {
+    emit(LoginLoading());
+    try {
+      UserCredential result = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email, password: password);
+      emit(LoginSuccess(user: result.user!));
+      authenticationCubit.emit(AuthenticationSuccess());
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      if (e.code == 'user-not-found') {
+        LoginFailure(error: 'Incorrect Username. Please try again.');
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        LoginFailure(error: 'Incorrect Password. Please try again.');
+        print('Wrong password provided for that user.');
+      }
+    } catch (e) {
+      LoginFailure(error: e.toString());
+      print(e);
+    }
+  }
 }
 
 String generateNonce([int length = 32]) {
