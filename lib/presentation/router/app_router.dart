@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:topjobinn/logic/authentication_cibit/authentication_cubit.dart';
 import 'package:topjobinn/logic/login_cubit/login_cubit.dart';
+import 'package:topjobinn/logic/user_data/user_data_cubit.dart';
 import 'package:topjobinn/presentation/screens/login_screen/login_screen.dart';
 
 import '../../core/constants/strings.dart';
@@ -21,8 +22,16 @@ class AppRouter {
           builder: (_) => BlocBuilder<AuthenticationCubit, AuthenticationState>(
             builder: (context, state) {
               if (state is AuthenticationSuccess) {
-                return HomeScreen(
-                  title: Strings.homeScreenTitle,
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => UserDataCubit(),
+                    ),
+                    BlocProvider.value(
+                     value: context.read<AuthenticationCubit>(),
+                    ),
+                  ],
+                  child: HomeScreen(),
                 );
               } else {
                 return BlocProvider(
