@@ -27,8 +27,7 @@ class LoginScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(loginState.toString()),
-                  if(loginState is LoginState)Text(loginState.errorMessage.toString()),
+                  
                   const LoginPlaceHolder(),
                   Container(
                     height: 482.h,
