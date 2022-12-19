@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:topjobinn/logic/authentication_cibit/authentication_cubit.dart';
+import 'package:topjobinn/logic/login_cubit/login_cubit.dart';
 import 'package:topjobinn/presentation/screens/login_screen/login_screen.dart';
 
 import '../../core/constants/strings.dart';
@@ -15,13 +18,29 @@ class AppRouter {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(
-          builder: (_) => HomeScreen(
-            title: Strings.homeScreenTitle,
+          builder: (_) => BlocBuilder<AuthenticationCubit, AuthenticationState>(
+            builder: (context, state) {
+              if (state is AuthenticationSuccess) {
+                return HomeScreen(
+                  title: Strings.homeScreenTitle,
+                );
+              } else {
+                return BlocProvider(
+                  create: (context) => LoginCubit(
+                      authenticationCubit: context.read<AuthenticationCubit>()),
+                  child: LoginScreen(),
+                );
+              }
+            },
           ),
         );
       case login:
         return MaterialPageRoute(
-          builder: (_) => LoginScreen(),
+          builder: (_) => BlocProvider(
+            create: (context) => LoginCubit(
+                authenticationCubit: context.read<AuthenticationCubit>()),
+            child: LoginScreen(),
+          ),
         );
       default:
         throw const RouteException('Route not found!');

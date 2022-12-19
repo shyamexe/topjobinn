@@ -5,6 +5,21 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              'Welcome',
+            ),
+            
+            Container(
+              width: double.infinity,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
